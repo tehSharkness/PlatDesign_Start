@@ -1,0 +1,146 @@
+// ------------------------------------------------------
+// Paste in this code into state machine:
+// (see below for commented code)
+// ------------------------------------------------------
+//
+idle;
+write 00 FF;
+write 00 FF; 
+write 00 F3; 
+write 00 FC; 
+read 1040; 
+testbit 0 0; 
+read 1040; 
+testbit 0 1; 
+write 00 F1; 
+write 00 F2; 
+write 00 F4; 
+write 00 F8;
+write 40 00;
+write 44 00;
+write 48 00;
+write 4C 40;
+write 58 8C;
+read  40; 
+testbit 0 1; 
+write 00 FA; 
+write 00 F5;
+read  1040; 
+testbit 0 0; 
+read  1040; 
+testbit 0 1; 
+write 00 F1; 
+write 00 F2; 
+write 00 F4; 
+write 00 F8;
+write 20 00;
+write 24 00;
+write 28 00;
+write 2C 40;
+write 38 28C;
+read  20; 
+testbit 0 1;
+write 20 00;
+write 24 00;
+write 28 10000;
+write 2C 40;
+write 38 8C;
+read  20; 
+testbit 0 1; 
+read  1040; 
+testbit 1 0; 
+read  1040; 
+testbit 1 1; 
+write 00 F8; 
+write 00 F4; 
+write 00 F2; 
+write 00 F1;
+loop 0
+
+
+// ------------------------------------------------------
+// State Machine Instruction Sequence Explained
+// (Annotated version of the code above)
+// ------------------------------------------------------
+//
+idle;
+//
+// Init pattern (written directly to LED FIFO)
+write 00 FF; 	
+write 00 FF; 
+write 00 F3; 
+write 00 FC; 
+//
+// Wait for button #1 (KEY0) press
+read 1040; 
+testbit 0 0; 
+read 1040; 
+testbit 0 1; 
+//
+// Button #1 acknowledge pattern
+write 00 F1; 
+write 00 F2; 
+write 00 F4; 
+write 00 F8;
+//
+// First DMA Txfr
+write 40 00;
+write 44 00;
+write 48 00;
+write 4C 40;
+write 58 8C;
+read  40; 
+testbit 0 1; 
+//
+// Data-in-SRAM acknowledge pattern
+write 00 FA; 
+write 00 F5;
+//
+// Wait for another button #1 press
+read  1040; 
+testbit 0 0; 
+read  1040; 
+testbit 0 1; 
+//
+// Button #1 acknowledge pattern
+write 00 F1; 
+write 00 F2; 
+write 00 F4; 
+write 00 F8;
+//
+// Second DMA Txfr from SSRAM to LED FIFO
+write 20 00;
+write 24 00;
+write 28 00;
+write 2C 40;
+write 38 28C;
+read  20; 
+testbit 0 1; 
+//
+// Backup contents in on-chip memory
+write 20 00;
+write 24 00;
+write 28 10000;
+write 2C 40;
+write 38 8C;
+read  20; 
+testbit 0 1; 
+//
+// Wait for button #2 (KEY1) press
+read  1040; 
+testbit 1 0; 
+read  1040; 
+testbit 1 1; 
+//
+// Button #2 acknowledge pattern
+write 00 F8; 
+write 00 F4; 
+write 00 F2; 
+write 00 F1;
+//
+//
+loop 0
+
+
+
+
